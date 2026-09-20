@@ -2,7 +2,7 @@ import math
 
 import matplotlib.pyplot as plt
 
-from src.kinematics import forward_kinematics
+from src.kinematics import joint_positions
 
 
 def plot_arm(
@@ -13,10 +13,9 @@ def plot_arm(
 ) -> None:
     """Visualize the 2-link robotic arm."""
 
-    x1 = l1 * math.cos(theta1)
-    y1 = l1 * math.sin(theta1)
-
-    x2, y2 = forward_kinematics(theta1, theta2, l1, l2)
+    (x1, y1), (x2, y2) = joint_positions(
+        theta1, theta2, l1, l2
+    )
 
     plt.figure(figsize=(6, 6))
 
