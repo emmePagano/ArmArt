@@ -1,3 +1,4 @@
+import argparse
 import math
 
 import matplotlib.pyplot as plt
@@ -36,8 +37,28 @@ def plot_arm(
 
 
 def main() -> None:
-    theta1 = 0.0
-    theta2 = math.pi / 2
+    parser = argparse.ArgumentParser(
+        description="Simulate the ArmArt robotic arm."
+    )
+
+    parser.add_argument(
+        "--theta1",
+        type=float,
+        default=0.0,
+        help="First joint angle in degrees.",
+    )
+
+    parser.add_argument(
+        "--theta2",
+        type=float,
+        default=90.0,
+        help="Second joint angle in degrees.",
+    )
+
+    args = parser.parse_args()
+
+    theta1 = math.radians(args.theta1)
+    theta2 = math.radians(args.theta2)
 
     plot_arm(theta1, theta2)
 
