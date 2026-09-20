@@ -5,12 +5,13 @@ import matplotlib.pyplot as plt
 from src.kinematics import forward_kinematics
 
 
-def main() -> None:
-    theta1 = 0.0
-    theta2 = math.pi / 2
-
-    l1 = 1.0
-    l2 = 1.0
+def plot_arm(
+    theta1: float,
+    theta2: float,
+    l1: float = 1.0,
+    l2: float = 1.0,
+) -> None:
+    """Visualize the 2-link robotic arm."""
 
     x1 = l1 * math.cos(theta1)
     y1 = l1 * math.sin(theta1)
@@ -33,6 +34,13 @@ def main() -> None:
 
     plt.savefig("outputs/arm.png")
     plt.show()
+
+
+def main() -> None:
+    theta1 = 0.0
+    theta2 = math.pi / 2
+
+    plot_arm(theta1, theta2)
 
 
 if __name__ == "__main__":
