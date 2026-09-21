@@ -1,5 +1,7 @@
 import math
 
+import pytest
+
 from src.kinematics import forward_kinematics
 
 
@@ -29,3 +31,19 @@ def test_joint_positions_right_angle():
 
     assert math.isclose(x2, 1.0)
     assert math.isclose(y2, 1.0)
+
+from src.kinematics import inverse_kinematics
+
+
+def test_inverse_kinematics_right_angle():
+    theta1, theta2 = inverse_kinematics(1.0, 1.0)
+
+    x, y = forward_kinematics(theta1, theta2)
+
+    assert math.isclose(x, 1.0)
+    assert math.isclose(y, 1.0)
+
+
+def test_inverse_kinematics_unreachable_point():
+    with pytest.raises(ValueError):
+        inverse_kinematics(3.0, 0.0)
