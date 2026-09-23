@@ -2,20 +2,18 @@ import matplotlib.pyplot as plt
 
 from src.kinematics import joint_positions
 from src.motion import trajectory_to_angles
-from src.trajectory import line_trajectory
+from src.trajectory import circle_trajectory
 
 
 def simulate_motion() -> None:
     """Simulate the arm following a straight-line trajectory."""
 
-    start = (1.0, 0.5)
-    end = (0.0, 1.5)
-
-    trajectory = line_trajectory(
-        start,
-        end,
-        steps=20,
-    )
+    trajectory = circle_trajectory(
+    center=(0.7, 0.8),
+    radius=0.3,
+    steps=100,
+)
+    
 
     angles = trajectory_to_angles(trajectory)
 
