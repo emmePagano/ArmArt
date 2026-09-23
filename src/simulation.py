@@ -6,7 +6,7 @@ from src.motion import trajectory_to_angles
 
 
 def simulate_motion() -> None:
-    """Simulate the arm drawing multiple strokes."""
+    """Simulate drawing and travel operations."""
 
     drawing = create_drawing()
 
@@ -14,11 +14,10 @@ def simulate_motion() -> None:
 
     completed_strokes = []
 
-    for stroke in drawing:
-        angles = trajectory_to_angles(stroke)
+    for operation in drawing:
+        angles = trajectory_to_angles(operation.points)
 
-        x_history = []
-        y_history = []
+        current_stroke = []
 
         for theta1, theta2 in angles:
             (x1, y1), (x2, y2) = joint_positions(
@@ -26,25 +25,32 @@ def simulate_motion() -> None:
                 theta2,
             )
 
-            x_history.append(x2)
-            y_history.append(y2)
+            if operation.operation_type == "DRAW":
+                current_stroke.append((x2, y2))
 
             plt.cla()
 
             # Tratti già completati
-            for completed_x, completed_y in completed_strokes:
+            for stroke in completed_strokes:
+                x_points = [point[0] for point in stroke]
+                y_points = [point[1] for point in stroke]
+
                 plt.plot(
-                    completed_x,
-                    completed_y,
+                    x_points,
+                    y_points,
                     marker=".",
                 )
 
             # Tratto corrente
-            plt.plot(
-                x_history,
-                y_history,
-                marker=".",
-            )
+            if operation.operation_type == "DRAW":
+                x_points = [point[0] for point in current_stroke]
+                y_points = [point[1] for point in current_stroke]
+
+                plt.plot(
+                    x_points,
+                    y_points,
+                    marker=".",
+                )
 
             # Braccio
             plt.plot(
@@ -70,7 +76,8 @@ def simulate_motion() -> None:
 
             plt.pause(0.1)
 
-        completed_strokes.append((x_history, y_history))
+        if operation.operation_type == "DRAW":
+            completed_strokes.append(current_stroke)
 
     plt.show()
 
